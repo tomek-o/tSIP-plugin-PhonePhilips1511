@@ -92,7 +92,7 @@ namespace nsHidDevice {
         /** \brief Write report to device
             \return 0 on success
         */
-        int WriteReport(enum E_REPORT_TYPE type, int id, unsigned char *buffer, int len);
+        int WriteReport(enum E_REPORT_TYPE type, int id, const unsigned char *buffer, int len);
 
         /** \brief Read report from device
             \param timeout operation timeout [ms]

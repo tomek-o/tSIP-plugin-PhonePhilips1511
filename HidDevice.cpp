@@ -283,7 +283,7 @@ void HidDevice::Close(void)
     }
 }
 
-int HidDevice::WriteReport(enum E_REPORT_TYPE type, int id, unsigned char *buffer, int len)
+int HidDevice::WriteReport(enum E_REPORT_TYPE type, int id, const unsigned char *buffer, int len)
 {
     BOOL status = 0;
     DWORD   bytesWritten;
@@ -324,7 +324,7 @@ int HidDevice::ReadReport(enum E_REPORT_TYPE type, int id, char *buffer, int *le
     memset(rcvbuf, 0, sizeof(rcvbuf));
     rcvbuf[0] = id;
     assert (*len < (int)sizeof(rcvbuf));
-    *len = sizeof(rcvbuf);
+    *len += 1;
 
     switch (type)
     {
@@ -338,9 +338,9 @@ int HidDevice::ReadReport(enum E_REPORT_TYPE type, int id, char *buffer, int *le
                 switch (result)
                 {
                 case WAIT_OBJECT_0:
-                    //*len = bytesRead;
+                    *len = outBufSize;
                     ResetEvent(hEventObject);
-                    memcpy(buffer, rcvbuf+1, std::min<int>(*len, outBufSize));
+                    memcpy(buffer, rcvbuf+1, *len);
                     return 0;
                 case WAIT_TIMEOUT:
                     result = CancelIo(readHandle);
@@ -356,8 +356,8 @@ int HidDevice::ReadReport(enum E_REPORT_TYPE type, int id, char *buffer, int *le
         }
         else
         {
-            *len = bytesRead;
-            memcpy(buffer, rcvbuf+1, std::min<int>(*len, outBufSize));
+            *len = outBufSize;
+            memcpy(buffer, rcvbuf+1, *len);
             return 0;
         }
         break;
