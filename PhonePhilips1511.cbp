@@ -74,6 +74,7 @@
 		<Unit filename="Log.cpp" />
 		<Unit filename="Log.h" />
 		<Unit filename="Mutex.h" />
+		<Unit filename="Philips1511.h" />
 		<Unit filename="Phone.cpp" />
 		<Unit filename="ScopedLock.h" />
 		<Unit filename="Utils.cpp" />
